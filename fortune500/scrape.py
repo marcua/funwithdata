@@ -1,6 +1,7 @@
 import csv
 import glob
 import html5lib
+import sys
 
 from csv import DictWriter
 from lxml import etree
@@ -28,7 +29,8 @@ def add_rows(tree, version, year, writer):
             'year': year
         })
 
-writer = DictWriter(open("fortune500.csv", "w"), ["year", "rank", "company", "revenue", "profit"])
+writer = DictWriter(open(sys.argv[1], "w"), ["year", "rank", "company", "revenue", "profit"])
+writer.writeheader()
 
 for ver in versions:
     for year in ver['years']:
@@ -37,4 +39,3 @@ for ver in versions:
             tree = html5lib.parse(tree_file, treebuilder="lxml")
             add_rows(tree, ver, year, writer)
             tree_file.close()
-            
